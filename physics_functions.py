@@ -13,7 +13,12 @@ def quadtree_divide(region, i):
     # division in regions more effective)
     region_length = len(region)
     a = region[0:int(region_length / 2)]
-    b = region[int(region_length / 2):]
+    if region_length % 2 != 0:
+        b = region[int(region_length / 2) - 1:]
+    else:
+        b = region[int(region_length / 2):]
+
+    quadtree_correction(a, b, i)
 
     # Doing the recursion only if the next step is possible. (the next sub-region has to be not less than
     # last_region_length)
@@ -41,10 +46,71 @@ def quadtree(region_e, i_e, region_answer_e):
 
 
 def sort_by(region, x_or_y):
-    if x_or_y == 1:
+    if x_or_y == 0:
         region.sort(key=lambda x: x.pos_x)
     else:
         region.sort(key=lambda y: y.pos_y)
+
+
+def quadtree_correction(a, b, i):
+    if i == 0:
+        scary_points_1 = []
+        scary_points_2 = []
+        operator_i = 1
+        detections = 0
+        while True:
+            if abs(b[0].pos_x - b[operator_i].pos_x) < b[operator_i].radius:
+                scary_points_2.append(b[operator_i])
+                detections += 1
+            if abs(a[-1].pos_x - a[-operator_i].pos_x) < a[-operator_i].radius:
+                scary_points_1.append(a[operator_i])
+                detections += 1
+            if detections != 0:
+                break
+            else:
+                operator_i += 1
+                detections = 0
+        for operator in scary_points_1:
+            for c_2 in b:
+                if operator.pos_x + operator.radius >= c_2.pos_x - c_2.radius:
+                    particles_collision_detection(operator, c_2)
+                else:
+                    break
+        for operator in scary_points_2:
+            for c_2 in range(1, len(a) - 1):
+                if operator.pos_x - operator.radius <= a[-c_2].pos_x + a[-c_2].radius:
+                    particles_collision_detection(operator, a[-c_2])
+                else:
+                    break
+    else:
+        scary_points_1 = []
+        scary_points_2 = []
+        operator_i = 1
+        detections = 0
+        while True:
+            if abs(b[0].pos_y - b[operator_i].pos_y) < b[operator_i].radius:
+                scary_points_2.append(b[operator_i])
+                detections += 1
+            if abs(a[-1].pos_y - a[-operator_i].pos_y) < a[-operator_i].radius:
+                scary_points_1.append(a[operator_i])
+                detections += 1
+            if detections != 0:
+                break
+            else:
+                operator_i += 1
+                detections = 0
+        for operator in scary_points_1:
+            for c_2 in b:
+                if operator.pos_y + operator.radius >= c_2.pos_y - c_2.radius:
+                    particles_collision_detection(operator, c_2)
+                else:
+                    break
+        for operator in scary_points_2:
+            for c_2 in range(1, len(a) - 1):
+                if operator.pos_y - operator.radius <= a[-c_2].pos_y + a[-c_2].radius:
+                    particles_collision_detection(operator, a[-c_2])
+                else:
+                    break
 
 
 def particles_collision_detection(c_1, c_2):

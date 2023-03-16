@@ -31,7 +31,7 @@ def particle_update(i):
     if g_s.show_vectors == 1:
         pygame.draw.line(screen, (255, 0, 0), (particles[i].pos_x, g_s.screen_height - particles[i].pos_y),
                          (particles[i].pos_x + particles[i].velocity * particles[i].direction[0] * 10,
-                         g_s.screen_height - particles[i].pos_y), 1)
+                          g_s.screen_height - particles[i].pos_y), 1)
         pygame.draw.line(screen, (0, 0, 255), (particles[i].pos_x, g_s.screen_height - particles[i].pos_y),
                          (particles[i].pos_x, (g_s.screen_height - particles[i].pos_y - particles[i].velocity *
                                                particles[i].direction[1] * 10)), 1)
@@ -61,7 +61,7 @@ def main():
                 if event.key == pygame.K_g:
                     g_s.gravity_influence_switch = (g_s.gravity_influence_switch + 1) % 2
         screen.fill(g_s.background_color)
-        
+
         # Dividing regions into sub-regions (see physics_functions.py)
         a = f_f.quadtree(particles, 0, [])
         # And running collission detection and response system through those sub-regions
@@ -69,7 +69,7 @@ def main():
             for j in range(0, len(a[i])):
                 for j_j in range(j + 1, len(a[i])):
                     f_f.particles_collision_detection(a[i][j], a[i][j_j])
-                
+
         for i in range(0, g_s.particles_amount):
             pygame.draw.circle(screen, particles[i].color, (particles[i].pos_x, g_s.screen_height - particles[i].pos_y),
                                particles[i].radius)
