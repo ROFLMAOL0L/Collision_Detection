@@ -47,7 +47,7 @@ def particles_collision_detection(c_1, c_2):
         overlap_amount = (r1 + r2 - distance_c1c2) / 2
         c_1.pos_x += overlap_amount * math.cos(feta)
         c_1.pos_y += overlap_amount * math.sin(feta)
-        c_2.pos_x += overlap_amount * math.cos(360 - feta)
-        c_2.pos_y += overlap_amount * math.sin(360 - feta)
+        c_2.pos_x += overlap_amount * math.cos((180 + feta) % 360)
+        c_2.pos_y += overlap_amount * math.sin((180 + feta) % 360)
         return True
     return False
